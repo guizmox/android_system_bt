@@ -85,7 +85,7 @@ typedef struct {
 #define STRING_VALUE_OF(x) #x
 
 // Abort if there is no response to an HCI command.
-static const uint32_t COMMAND_PENDING_TIMEOUT_MS = 2000;
+static const uint32_t COMMAND_PENDING_TIMEOUT_MS = 4000;
 static const uint32_t COMMAND_PENDING_MUTEX_ACQUIRE_TIMEOUT_MS = 500;
 static const uint32_t COMMAND_TIMEOUT_RESTART_MS = 5000;
 static const uint32_t ROOT_INFLAMMED_RESTART_MS = 5000;
@@ -468,12 +468,14 @@ static void fragmenter_transmit_finished(BT_HDR* packet,
 
 // Abort.  The chip has had time to write any debugging information.
 static void hci_timeout_abort(void) {
+  
+  //LOG_ERROR(LOG_TAG, "%s we should abort HCI command and restart BT but we don't want to", __func__);
   LOG_ERROR(LOG_TAG, "%s restarting the Bluetooth process.", __func__);
-  hci_close_firmware_log_file(hci_firmware_log_fd);
+  //hci_close_firmware_log_file(hci_firmware_log_fd);
 
   // We shouldn't try to recover the stack from this command timeout.
   // If it's caused by a software bug, fix it. If it's a hardware bug, fix it.
-  abort();
+  //abort();
 }
 
 static void hci_root_inflamed_abort() {
